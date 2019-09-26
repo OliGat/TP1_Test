@@ -109,3 +109,37 @@ describe('union', function () {
         expect(interval1.union(interval2)).toEqual([interval1]);
     });
 });
+
+describe('intersection', function () {
+
+    test("Test intersection avec interval1(5,25) et interval2(10,20) => [interval(10,20)]", () => {
+        let interval1 = new Interval(5,25);
+        let interval2 = new Interval(10,20);
+        expect(interval1.intersection(interval2)).toEqual([interval2]);
+    });
+
+    test("Test intersection avec interval1(5,25) et interval2(10,30) => [interval(10,25)]", () => {
+        let interval1 = new Interval(5,25);
+        let interval2 = new Interval(10,30);
+        expect(interval1.intersection(interval2)).toEqual([new Interval(10,25)]);
+    });
+
+    test("Test intersection avec interval1(5,15) et interval2(20,30) => []", () => {
+        let interval1 = new Interval(5,15);
+        let interval2 = new Interval(20,30);
+        expect(interval1.intersection(interval2)).toEqual([]);
+    });
+
+    test("Test intersection avec interval1(20,30) et interval2(5,15) => []", () => {
+        let interval1 = new Interval(20,30);
+        let interval2 = new Interval(5,15);
+        expect(interval1.intersection(interval2)).toEqual([]);
+    });
+
+    test("Test intersection avec interval1(10,30) et interval2(5,25) => [interval(10,25)]", () => {
+        let interval1 = new Interval(10,30);
+        let interval2 = new Interval(5,25);
+        expect(interval1.intersection(interval2)).toEqual([new Interval(10,25)]);
+    });
+
+});

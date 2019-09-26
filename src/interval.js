@@ -97,7 +97,13 @@ class Interval {
      * @returns {Interval|null}
      */
     intersection(interval) {
-
+        let res = [];
+        if(this.overlaps(interval)){
+            let startNewInterval = Math.max(this.start,interval.start);
+            let endNewINterval = Math.min(this.end, interval.end);
+            res.push(new Interval(startNewInterval,endNewINterval));
+        }
+        return res;
     };
 
     /**
