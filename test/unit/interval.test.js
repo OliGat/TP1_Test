@@ -81,6 +81,31 @@ describe('includes', function () {
         expect(interval1.includes(interval2)).toBe(false);
     });
 
+});
 
+describe('union', function () {
 
+    test("Test union avec interval1(5,25) et interval2(10,20) => [interval(5,25)]", () => {
+        let interval1 = new Interval(5,25);
+        let interval2 = new Interval(10,20);
+        expect(interval1.union(interval2)).toEqual([interval1]);
+    });
+
+    test("Test union avec interval1(5,10) et interval2(15,20) => [interval(5,10),interval(15,20)]", () => {
+        let interval1 = new Interval(5,10);
+        let interval2 = new Interval(15,20);
+        expect(interval1.union(interval2)).toEqual([interval1,interval2]);
+    });
+
+    test("Test union avec interval1(15,20) et interval2(5,10) => [interval(15,20),interval(5,10)]", () => {
+        let interval1 = new Interval(15,20);
+        let interval2 = new Interval(5,10);
+        expect(interval1.union(interval2)).toEqual([interval2,interval1]);
+    });
+
+    test("Test union avec interval1(5,25) et interval2(5,25) => [interval(5,25)]", () => {
+        let interval1 = new Interval(5,25);
+        let interval2 = new Interval(5,25);
+        expect(interval1.union(interval2)).toEqual([interval1]);
+    });
 });
