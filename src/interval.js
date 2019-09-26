@@ -124,6 +124,31 @@ class Interval {
      */
     exclusion(interval) {
 
+        if(typeof interval == "undefined"){
+            throw "Le paramètre interval est undefined";
+        }
+        if(interval.start>interval.end){
+            throw "Le paramètre interval n'est pas valide";
+        }
+
+        let res = [];
+        if (this.includes(interval)) {
+            return res;
+        }
+
+        if(!this.overlaps(interval)){
+            res.push(this);
+            res.push(interval);
+        } else {
+            let startNewInterval = Math.min(this.start,interval.start);
+            let endNewInterval = this.start===startNewInterval?interval.start:this.start;
+            res.push(new Interval(startNewInterval,endNewInterval));
+
+            startNewInterval = startNewInterval===this.start?this.end:interval.end;
+            endNewInterval = Math.max(this.end,interval.end);
+            res.push(new Interval(startNewInterval,endNewInterval));
+        }
+        return res;
     };
 }
 
