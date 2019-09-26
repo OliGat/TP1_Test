@@ -143,3 +143,37 @@ describe('intersection', function () {
     });
 
 });
+
+describe('exclusion', function () {
+
+    test("Test exclusion avec interval1(10,30) et undefined => Exception", () => {
+        let interval1 = new Interval(10,30);
+        let interval2;
+        expect(() => {interval1.exclusion(interval2)}).toThrow("Le paramètre interval est undefined");
+    });
+
+    test("Test exclusion avec interval1(10,30) et interval2(30,10) => Exception", () => {
+        let interval1 = new Interval(10,30);
+        let interval2 = new Interval(30,10);
+        expect(() => {interval1.exclusion(interval2)}).toThrow("Le paramètre interval n'est pas valide");
+    });
+
+    test("Test exclusion avec interval1(10,20) et interval2(30,40) => [interval(10,20),interval(30,40)]", () => {
+        let interval1 = new Interval(10,20);
+        let interval2 = new Interval(30,40);
+        expect(interval1.exclusion(interval2)).toStrictEqual([interval1,interval2]);
+    });
+
+    test("Test exclusion avec interval1(10,20) et interval2(15,40) => [interval(10,15),interval(20,40)]", () => {
+        let interval1 = new Interval(10,20);
+        let interval2 = new Interval(15,40);
+        expect(interval1.exclusion(interval2)).toEqual([new Interval(10,15),new Interval(20,40)]);
+    });
+
+    test("Test exclusion avec interval1(20,50) et interval2(10,40) => [interval(10,20),interval(40,50)]", () => {
+        let interval1 = new Interval(20,50);
+        let interval2 = new Interval(10,40);
+        expect(interval1.exclusion(interval2)).toEqual([new Interval(10,20),new Interval(40,50)]);
+    });
+
+});
