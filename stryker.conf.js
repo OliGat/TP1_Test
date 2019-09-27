@@ -3,8 +3,8 @@ module.exports = function(config) {
     mutator: "javascript",
     packageManager: "npm",
     reporters: ["html", "clear-text", "progress", "dashboard"],
-    testRunner: "command",
+    testRunner: "jest",
     transpilers: [],
-    coverageAnalysis: "all"
+    coverageAnalysis: "off"
   });
 };
