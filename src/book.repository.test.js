@@ -31,3 +31,30 @@ describe('Book repository getTotalCount', function () {
         expect(repository.getTotalCount()).toBe(1);
     });
 });
+
+describe('Book repository getTotalPrice', function () {
+
+    test('getTotalPrice', () => {
+        const bookMock = {
+            price:10
+        };
+        const dbMock = {
+            get : jest.fn().mockReturnThis(),
+            size : jest.fn().mockReturnThis(),
+            value : jest.fn().mockReturnValue([bookMock,bookMock])
+        };
+        const repository = new BookRepository(dbMock);
+        expect(repository.getTotalPrice()).toBe(20);
+    });
+
+    test("Test when no book in db => Exception", () => {
+        const dbMock = {
+            get : jest.fn().mockReturnThis(),
+            size : jest.fn().mockReturnThis(),
+            value : jest.fn().mockReturnValue(0)
+        };
+        const repository = new BookRepository(dbMock);
+        expect(()=>{repository.getTotalPrice()}).toThrow("Il n'y a pas de livre en db");
+    });
+
+});
