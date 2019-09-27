@@ -112,6 +112,18 @@ describe('union', function () {
 
 describe('intersection', function () {
 
+    test("Test exclusion avec interval1(10,30) et undefined => Exception", () => {
+        let interval1 = new Interval(10,30);
+        let interval2;
+        expect(() => {interval1.intersection(interval2)}).toThrow("Le paramètre interval est undefined");
+    });
+
+    test("Test exclusion avec interval1(10,30) et interval2(30,10) => Exception", () => {
+        let interval1 = new Interval(10,30);
+        let interval2 = new Interval(30,10);
+        expect(() => {interval1.intersection(interval2)}).toThrow("Le paramètre interval n'est pas valide");
+    });
+
     test("Test intersection avec interval1(5,25) et interval2(10,20) => [interval(10,20)]", () => {
         let interval1 = new Interval(5,25);
         let interval2 = new Interval(10,20);
@@ -185,6 +197,15 @@ describe('exclusion', function () {
 });
 
 describe("classInterval", function () {
+
+    test("Test constructeur de classe Interval Nominal => Interval", () => {
+        expect(new Interval(10,20)).toBeDefined();
+    });
+
+    test("Test constructeur de classe Interval Undefined => Undefined", () => {
+        let interval;
+        expect(interval).not.toBeDefined();
+    });
 
     test("Test de la fonction toSting avec interval(10,20) => [10,20]", () => {
         let interval = new Interval(10,20);
