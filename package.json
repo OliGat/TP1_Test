@@ -7,18 +7,30 @@
     "test": "test"
   },
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "test.coverage": "jest --coverage"
+  },
+  "jest": {
+    "verbose": true,
+    "coverageThreshold": {
+      "global": {
+        "branches": 0,
+        "functions": 0,
+        "lines": 70,
+        "statements": 0
+      }
+    }
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Kirouane/test-tp.git"
+    "url": "https://github.com/OliGat/TP1_Test.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Kirouane/test-tp/issues"
+    "url": "https://github.com/OliGat/TP1_Test/issues"
   },
-  "homepage": "https://github.com/Kirouane/test-tp#readme",
+  "homepage": "https://github.com/OliGat/TP1_Test#readme",
   "devDependencies": {
     "jest": "^24.1.0"
   }
