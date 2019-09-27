@@ -100,7 +100,7 @@ class Interval {
         if(typeof interval == "undefined"){
             throw "Le paramètre interval est undefined";
         }
-        if(interval.start>interval.end){
+        if(interval.start>=interval.end){
             throw "Le paramètre interval n'est pas valide";
         }
 
