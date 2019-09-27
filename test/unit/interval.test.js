@@ -164,6 +164,12 @@ describe('exclusion', function () {
         expect(interval1.exclusion(interval2)).toStrictEqual([interval1,interval2]);
     });
 
+    test("Test exclusion avec interval1(10,40) et interval2(20,30) => []", () => {
+        let interval1 = new Interval(10,40);
+        let interval2 = new Interval(20,30);
+        expect(interval1.exclusion(interval2)).toStrictEqual([]);
+    });
+
     test("Test exclusion avec interval1(10,20) et interval2(15,40) => [interval(10,15),interval(20,40)]", () => {
         let interval1 = new Interval(10,20);
         let interval2 = new Interval(15,40);
@@ -174,6 +180,15 @@ describe('exclusion', function () {
         let interval1 = new Interval(20,50);
         let interval2 = new Interval(10,40);
         expect(interval1.exclusion(interval2)).toEqual([new Interval(10,20),new Interval(40,50)]);
+    });
+
+});
+
+describe("classInterval", function () {
+
+    test("Test de la fonction toSting avec interval(10,20) => [10,20]", () => {
+        let interval = new Interval(10,20);
+        expect(interval.toString()).toBe("[10,20]");
     });
 
 });
