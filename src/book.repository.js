@@ -24,6 +24,11 @@ class BookRepository {
      */
     getTotalPrice() {
         let totalPrice = 0;
+
+        if(this.db.get('books').size().value()===0){
+            throw "Il n'y a pas de livre en db";
+        }
+
         for (let book of this.db.get('books').value()){
             totalPrice += book.price;
         }
@@ -35,8 +40,8 @@ class BookRepository {
      * Retourne un livre
      */
     getBookByName(bookName) {
-        let book = this.db.get('books').filter({name:bookName}).value();
-        return book;
+//        let book = this.db.get('books').filter({name:bookName}).value();
+//        return book;
     }
 
     /**
@@ -59,7 +64,6 @@ class BookRepository {
      *  ]
      */
     getCountBookAddedByMont(bookName) {
-
     }
 
 }
