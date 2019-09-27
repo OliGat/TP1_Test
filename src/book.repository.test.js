@@ -58,3 +58,38 @@ describe('Book repository getTotalPrice', function () {
     });
 
 });
+
+describe("Book repository getBookByName", function () {
+
+    test("Test when bookname= \"\" => Exception",() => {
+        const dbMock = {};
+        const repository = new BookRepository(dbMock);
+        expect(()=>{repository.getBookByName("")})
+            .toThrow('Le titre du livre ne peut être vide');
+    });
+
+    test("Test when bookname= \" \" => Exception",() => {
+        const dbMock = {};
+        const repository = new BookRepository(dbMock);
+        expect(()=>{repository.getBookByName(" ")})
+            .toThrow('Le titre du livre ne peut être vide');
+    });
+
+    test("Test when bookname= undefined => Exception",() => {
+        const dbMock = {};
+        const repository = new BookRepository(dbMock);
+        expect(()=>{repository.getBookByName()})
+            .toThrow('Le paramètre n\'est pas valide');
+    });
+    test("Test when bookname = \"\" => book",() => {
+        const book = {id: 1, name: "Unit test"}
+        const dbMock = {
+            get: jest.fn().mockReturnThis(),
+            filter: jest.fn().mockReturnThis(),
+            value: jest.fn().mockReturnValue(book)
+        };
+        const repository = new BookRepository(dbMock);
+        expect(repository.getBookByName(book.name)).toEqual(book);
+    });
+
+});
