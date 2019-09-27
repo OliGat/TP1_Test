@@ -97,6 +97,13 @@ class Interval {
      * @returns {Interval|null}
      */
     intersection(interval) {
+        if(typeof interval == "undefined"){
+            throw "Le paramètre interval est undefined";
+        }
+        if(interval.start>interval.end){
+            throw "Le paramètre interval n'est pas valide";
+        }
+
         let res = [];
         if(this.overlaps(interval)){
             let startNewInterval = Math.max(this.start,interval.start);
