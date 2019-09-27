@@ -40,8 +40,17 @@ class BookRepository {
      * Retourne un livre
      */
     getBookByName(bookName) {
-//        let book = this.db.get('books').filter({name:bookName}).value();
-//        return book;
+
+        if(typeof bookName === "undefined"){
+            throw 'Le paramètre n\'est pas valide';
+        }
+        if(bookName==="" || bookName===" "){
+            throw 'Le titre du livre ne peut être vide';
+        }
+
+        let book = this.db.get('books').filter({name:bookName}).value();
+
+        return book;
     }
 
     /**
