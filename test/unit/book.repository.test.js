@@ -162,20 +162,22 @@ describe("Book repository getCountBookAddedByMont", function () {
         const book = {name: nameBookTest, added_at: "2019-01-01"};
         const book1 = {name: nameBookTest, added_at: "2019-02-01"};
         const book2 = {name: nameBookTest, added_at: "2019-02-01"};
+        const book3 = {name: nameBookTest, added_at: "2018-02-01"};
         const result = [
             {
-                year: '2019', month: '01', count: 1, count_cumulative: 1
+                year: '2018', month: '02', count: 1, count_cumulative: 1
             },
             {
-                year: '2019', month: '02', count: 2, count_cumulative: 3
+                year: '2019', month: '01', count: 1, count_cumulative: 2
+            },
+            {
+                year: '2019', month: '02', count: 2, count_cumulative: 4
             }
         ];
         const dbMock = {
             get: jest.fn().mockReturnThis(),
             size: jest.fn().mockReturnThis(),
-            filter: jest.fn().mockReturnThis(),
-            sortBy: jest.fn().mockReturnThis(),
-            value: jest.fn().mockReturnValue([book,book1,book2])
+            value: jest.fn().mockReturnValue([book,book1,book2,book3])
         };
         const repository = new BookRepository(dbMock);
         expect(repository.getCountBookAddedByMont("Unit test")).toEqual(result);
