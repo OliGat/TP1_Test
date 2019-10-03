@@ -1,3 +1,5 @@
+const _ = require('lodash');
+
 class BookRepository {
 
     /**
@@ -73,102 +75,58 @@ class BookRepository {
      *  ]
      */
 
+    getCountBookAddedByMonth() {
+
+        if(this.db.get('books').size().value()===0){
+            throw "Il n'y a pas de livre en db";
+        }
+
+        let sum = 0;
+        const test = _(this.db.get('books').value());
+
+        return test.groupBy(x=>x.added_at.slice(0,7))
+            .map((val, key) => {
+                return {
+                    year : key.slice(0,4),
+                    month: key.slice(5,7),
+                    count: val.length,
+                    count_cumulative: sum+=val.length
+                };
+            }).value();
+
+    }
     getCountBookAddedByMont(bookName) {
 
-        let countBookTab = [];
-
-        if(typeof bookName === "undefined"){
+        if(bookName === undefined){
             throw 'Le paramètre n\'est pas valide';
         }
         if(bookName==="" || bookName===" "){
             throw 'Le titre du livre ne peut être vide';
         }
-
         if(this.db.get('books').size().value()===0){
             throw "Il n'y a pas de livre en db";
         }
 
-        let map = new Map();
-        let currentA, dateSplit;
-        let annee, month;
-        let books = this.db.get('books').filter({name:bookName}).sortBy('added_at').value();
-        for (let book of books){
-            dateSplit = book.added_at.split('-');
-            annee = dateSplit[0];
-            month = dateSplit[1];
-            currentA = map.get(annee);
-            if(currentA === undefined){
-                currentA = new Map();
-                map.set(annee, currentA);
-            }
-            if(currentA.get(month) === undefined){
-                currentA.set(month,1);
-            }
-            else {
-                currentA.set(month,currentA.get(month)+1);
-            }
-        }
 
-        countBookTab = this.updateOut(map);
+        let sum = 0;
+        const test = _(this.db.get('books').value())
+            .filter({name:bookName})
+            .sortBy('added_at')
+            .groupBy(x=>x.added_at.slice(0,7))
+            .map(function (val, key) {
+                return {
+                    year : key.slice(0,4),
+                    month: key.slice(5,7),
+                    count: val.length,
+                    count_cumulative: sum+=val.length
+                };
 
-        return countBookTab;
+            }).value();
 
+        return test;
     }
-
-
-    getCountBookAddedByMonth() {
-
-        let countBookTab = [];
-
-        if(this.db.get('books').size().value()===0){
-            throw "Il n'y a pas de livre en db";
-        }
-
-        let map = new Map();
-        let currentA, dateSplit;
-        let annee, month;
-        let books = this.db.get('books').sortBy('added_at').value();
-        for (let book of books){
-            dateSplit = book.added_at.split('-');
-            annee = dateSplit[0];
-            month = dateSplit[1];
-            currentA = map.get(annee);
-            if(currentA === undefined){
-                currentA = new Map();
-                map.set(annee, currentA);
-            }
-            if(currentA.get(month) === undefined){
-                currentA.set(month,1);
-            }
-            else {
-                currentA.set(month,currentA.get(month)+1);
-            }
-        }
-
-        countBookTab = this.updateOut(map);
-
-        return countBookTab;
-    }
-
-    updateOut(map) {
-        let countBookTab = [];
-        let cumulBooks;
-        map.forEach(function (valueMap, keyMap) {
-            cumulBooks = 0;
-            valueMap.forEach(function (valueMois, keyMois) {
-                cumulBooks += valueMois;
-                countBookTab.push({
-                    year: keyMap,
-                    month: keyMois,
-                    count: valueMois,
-                    count_cumulative: cumulBooks
-                });
-            });
-        });
-        return countBookTab;
-    }
-
 }
+
 
 
 module.exports = BookRepository;
