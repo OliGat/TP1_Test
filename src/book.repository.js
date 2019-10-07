@@ -31,7 +31,7 @@ class BookRepository {
             throw "Il n'y a pas de livre en db";
         }
 
-        for (let book of this.db.get('books').value()){
+        for (const book of this.db.get('books').value()){
             totalPrice += book.price;
         }
         return Math.round(totalPrice);
@@ -43,14 +43,19 @@ class BookRepository {
      */
     getBookByName(bookName) {
 
-        if(typeof bookName === "undefined"){
+        if(bookName === undefined){
             throw 'Le paramètre n\'est pas valide';
         }
-        if(bookName==="" || bookName===" "){
+        if(bookName === "" || bookName===" "){
             throw 'Le titre du livre ne peut être vide';
         }
 
-        let book = this.db.get('books').filter({name:bookName}).value();
+        if(!this.db.get('books').size().value()){
+            throw 'La base est vide';
+        }
+
+        const locDB = _(this.db.get('books').value());
+        const book = locDB.find({name:bookName});
 
         return book;
     }
@@ -109,8 +114,9 @@ class BookRepository {
 
 
         let sum = 0;
-        const test = _(this.db.get('books').value())
-            .filter({name:bookName})
+        const locDB = _(this.db.get('books').value())
+
+        const result = locDB.filter({name:bookName})
             .sortBy('added_at')
             .groupBy(x=>x.added_at.slice(0,7))
             .map(function (val, key) {
@@ -123,7 +129,7 @@ class BookRepository {
 
             }).value();
 
-        return test;
+        return result;
     }
 }
 
