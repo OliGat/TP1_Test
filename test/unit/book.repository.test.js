@@ -81,15 +81,45 @@ describe("Book repository getBookByName", function () {
         expect(()=>{repository.getBookByName()})
             .toThrow('Le paramètre n\'est pas valide');
     });
-    test("Test when bookname = \"\" => book",() => {
-        const book = {id: 1, name: "Unit test"}
+
+    test("Test when db is Empty => Exception", () => {
+       const dbMock = {
+           get: jest.fn().mockReturnThis(),
+           size: jest.fn().mockReturnThis(),
+           value: jest.fn()
+               .mockReturnValue(0)};
+       const repository = new BookRepository(dbMock);
+       expect(() => {repository.getBookByName("Unit test")})
+           .toThrow('La base est vide');
+    });
+
+    test("Test when bookname = \"Unit test\" => book",() => {
+        const book = {name: "Unit test2"};
+        const book2 = {name: "Unit test2"};
+        const book3 = {name: "Unit test"};
         const dbMock = {
             get: jest.fn().mockReturnThis(),
-            filter: jest.fn().mockReturnThis(),
-            value: jest.fn().mockReturnValue(book)
+            size: jest.fn().mockReturnThis(),
+            value: jest.fn()
+                .mockReturnValue(3)
+                .mockReturnValue([book,book2,book3])
         };
         const repository = new BookRepository(dbMock);
         expect(repository.getBookByName(book.name)).toEqual(book);
+    });
+
+    test("Test when bookname = \"Unit test\" => Exception",() => {
+        const book1 = {name: "Unit test1"};
+        const book2 = {name: "Unit test2"};
+        const dbMock = {
+            get: jest.fn().mockReturnThis(),
+            size: jest.fn().mockReturnThis(),
+            value: jest.fn()
+                .mockReturnValue(2)
+                .mockReturnValue([book1,book2])
+        };
+        const repository = new BookRepository(dbMock);
+        expect(repository.getBookByName("Unit test")).not.toBeDefined();
     });
 
 });
@@ -158,11 +188,12 @@ describe("Book repository getCountBookAddedByMont", function () {
     });
 
     test("Test  => {}",() => {
-        nameBookTest = "Unit test";
+        const nameBookTest = "Unit test";
         const book = {name: nameBookTest, added_at: "2019-01-01"};
         const book1 = {name: nameBookTest, added_at: "2019-02-01"};
         const book2 = {name: nameBookTest, added_at: "2019-02-01"};
         const book3 = {name: nameBookTest, added_at: "2018-02-01"};
+        const book4 = {name: "Unit test2", added_at: "2017-02-01"};
         const result = [
             {
                 year: '2018', month: '02', count: 1, count_cumulative: 1
@@ -177,7 +208,7 @@ describe("Book repository getCountBookAddedByMont", function () {
         const dbMock = {
             get: jest.fn().mockReturnThis(),
             size: jest.fn().mockReturnThis(),
-            value: jest.fn().mockReturnValue([book,book1,book2,book3])
+            value: jest.fn().mockReturnValue([book,book1,book2,book3,book4])
         };
         const repository = new BookRepository(dbMock);
         expect(repository.getCountBookAddedByMont("Unit test")).toEqual(result);
